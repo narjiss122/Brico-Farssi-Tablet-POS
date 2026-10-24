@@ -8,7 +8,7 @@ import {
 
 type Category = 'Cuisine' | 'Dressing' | 'Portes et serrures' | 'Quincaillerie de meubles' | 'Éclairage LED' | 'Accessoires';
 type Variant = { label: string; ref: string; price: number };
-type Product = { id: string; name: string; sku: string; brand: string; category: Category; price: number; unit: string; barcode?: string; variants?: Variant[]; icon: 'wardrobe' | 'kitchen' | 'door' | 'furniture' | 'light' | 'hardware' };
+type Product = { id: string; name: string; sku: string; brand: string; category: Category; price: number; unit: string; barcode?: string; variants?: Variant[]; image?: string; icon: 'wardrobe' | 'kitchen' | 'door' | 'furniture' | 'light' | 'hardware' };
 type CartLine = { key: string; product: Product; variant?: Variant; quantity: number };
 type Toast = { id: number; message: string };
 type Payment = 'Espèces' | 'Carte bancaire' | 'Virement' | 'Crédit client';
@@ -16,25 +16,25 @@ type Payment = 'Espèces' | 'Carte bancaire' | 'Virement' | 'Crédit client';
 const widths: Variant[] = [600, 700, 800, 900].map((width, index) => ({ label: `${width} mm`, ref: `W201-${width}`, price: [128, 139, 151, 165][index] }));
 const variantsOf = (sku: string, labels: string[], prices: number[]): Variant[] => labels.map((label, i) => ({ label, ref: `${sku}-${String(i + 1).padStart(2, '0')}`, price: prices[i] }));
 const products: Product[] = [
-  { id:'w201', name:'Porte-pantalons extractible', sku:'W201', brand:'Dorüm', category:'Dressing', price:128, unit:'pièce', icon:'wardrobe', barcode:'8699010201201', variants:widths },
-  { id:'w220', name:'Porte-chaussures coulissant', sku:'W220', brand:'Dorüm', category:'Dressing', price:245, unit:'pièce', icon:'wardrobe', variants:variantsOf('W220',['Supreme Grey','Mocha','Walnut'],[245,259,275]) },
-  { id:'w221', name:'Porte-cravates latéral', sku:'W221', brand:'Dorüm', category:'Dressing', price:119, unit:'pièce', icon:'wardrobe', variants:variantsOf('W221',['Supreme Grey','Mocha'],[119,129]) },
-  { id:'w222', name:'Porte-ceintures extractible', sku:'W222', brand:'Dorüm', category:'Dressing', price:112, unit:'pièce', icon:'wardrobe' },
-  { id:'w223', name:'Porte-foulards coulissant', sku:'W223', brand:'Dorüm', category:'Dressing', price:138, unit:'pièce', icon:'wardrobe', variants:variantsOf('W223',['Supreme Grey','Mocha'],[138,148]) },
-  { id:'w219', name:'Panier filaire coulissant', sku:'W219', brand:'Dorüm', category:'Dressing', price:198, unit:'pièce', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`W219-${v.label.replace(' mm','')}`,price:[198,215,232,254][i]})) },
-  { id:'w229', name:'Porte-pantalons double', sku:'W229', brand:'Dorüm', category:'Dressing', price:298, unit:'pièce', icon:'wardrobe', variants:variantsOf('W229',['Supreme Grey','Mocha'],[298,315]) },
-  { id:'w232', name:'Tringle penderie ovale', sku:'W232', brand:'Dorüm', category:'Dressing', price:45, unit:'mètre', icon:'wardrobe' },
-  { id:'w233', name:'Support de tringle latéral', sku:'W233', brand:'Dorüm', category:'Dressing', price:18, unit:'paire', icon:'wardrobe' },
-  { id:'w234', name:'Élévateur de penderie', sku:'W234', brand:'Dorüm', category:'Dressing', price:420, unit:'pièce', icon:'wardrobe', variants:variantsOf('W234',['Noir mat','Champagne'],[420,445]) },
-  { id:'w235', name:'Porte-pantalons compact', sku:'W235', brand:'Dorüm', category:'Dressing', price:189, unit:'pièce', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`W235-${v.label.replace(' mm','')}`,price:[189,204,221,239][i]})) },
-  { id:'w236', name:'Tiroir à bijoux feutré', sku:'W236', brand:'Dorüm', category:'Dressing', price:275, unit:'pièce', icon:'wardrobe', variants:variantsOf('W236',['Supreme Grey','Mocha','Walnut'],[275,289,305]) },
-  { id:'w243', name:'Porte-chaussures inclinable', sku:'W243', brand:'Dorüm', category:'Dressing', price:325, unit:'pièce', icon:'wardrobe', variants:variantsOf('W243',['Supreme Grey','Mocha'],[325,342]) },
-  { id:'w242', name:'Panier rotatif d’angle', sku:'W242', brand:'Dorüm', category:'Dressing', price:560, unit:'set', icon:'wardrobe', variants:variantsOf('W242',['4 niveaux','6 niveaux','8 niveaux','10 niveaux','12 niveaux'],[560,690,825,960,1120]) },
-  { id:'y611', name:'Porte-pantalons extractible', sku:'Y611', brand:'Yue Wood', category:'Dressing', price:155, unit:'pièce', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`Y611-${v.label.replace(' mm','')}`,price:[155,168,182,199][i]})) },
-  { id:'y614', name:'Porte-cravates et ceintures', sku:'Y614', brand:'Yue Wood', category:'Dressing', price:145, unit:'pièce', icon:'wardrobe', variants:variantsOf('Y614',['Noir mat','Champagne'],[145,159]) },
-  { id:'y616', name:'Panier latéral multi-usage', sku:'Y616', brand:'Yue Wood', category:'Dressing', price:225, unit:'pièce', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`Y616-${v.label.replace(' mm','')}`,price:[225,240,258,279][i]})) },
-  { id:'s227a', name:'Spot LED encastré rond', sku:'S227A', brand:'Autres', category:'Éclairage LED', price:68, unit:'pièce', icon:'light', barcode:'6111202227011', variants:variantsOf('S227A',['Blanc chaud 3000K','Blanc naturel 4000K','Blanc froid 6000K'],[68,68,72]) },
-  { id:'s227b', name:'Spot LED encastré carré', sku:'S227B', brand:'Autres', category:'Éclairage LED', price:74, unit:'pièce', icon:'light', variants:variantsOf('S227B',['Blanc chaud 3000K','Blanc naturel 4000K','Blanc froid 6000K'],[74,74,78]) },
+  { id:'w201', name:'Panier rotin W201', sku:'W201', brand:'Dorüm', category:'Dressing', price:128, unit:'pièce', image:'/products/w201.webp', icon:'wardrobe', barcode:'8699010201201', variants:widths },
+  { id:'w220', name:'Panier rotin coulissant', sku:'W220', brand:'Dorüm', category:'Dressing', price:245, unit:'pièce', image:'/products/w220.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`W220-${v.label.replace(' mm','')}`,price:[245,259,275,292][i]})) },
+  { id:'w221', name:'Panier métallique', sku:'W221', brand:'Dorüm', category:'Dressing', price:119, unit:'pièce', image:'/products/w221.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`W221-${v.label.replace(' mm','')}`,price:[119,129,139,149][i]})) },
+  { id:'w222', name:'Porte-chaussures W222', sku:'W222', brand:'Dorüm', category:'Dressing', price:112, unit:'pièce', image:'/products/w222.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`W222-${v.label.replace(' mm','')}`,price:[112,125,138,152][i]})) },
+  { id:'w223', name:'Boîte de rangement en flanelle', sku:'W223', brand:'Dorüm', category:'Dressing', price:138, unit:'pièce', image:'/products/w223.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`W223-${v.label.replace(' mm','')}`,price:[138,148,158,168][i]})) },
+  { id:'w219', name:'Porte-pantalons extractible', sku:'W219', brand:'Dorüm', category:'Dressing', price:198, unit:'pièce', image:'/products/w219.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`W219-${v.label.replace(' mm','')}`,price:[198,215,232,254][i]})) },
+  { id:'w229', name:'Porte-pantalons latéral', sku:'W229', brand:'Dorüm', category:'Dressing', price:298, unit:'pièce', image:'/products/w229.webp', icon:'wardrobe', variants:variantsOf('W229',['500 mm','600 mm','700 mm','800 mm'],[298,315,330,345]) },
+  { id:'w232', name:'Porte-cintres coulissant', sku:'W232', brand:'Dorüm', category:'Dressing', price:45, unit:'pièce', image:'/products/w232.webp', icon:'wardrobe' },
+  { id:'w233', name:'Monte-charge de penderie', sku:'W233', brand:'Dorüm', category:'Dressing', price:420, unit:'pièce', image:'/products/w233.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`W233-${v.label.replace(' mm','')}`,price:[420,440,465,490][i]})) },
+  { id:'w234', name:'Porte-chaussures rotatif 360°', sku:'W234', brand:'Dorüm', category:'Dressing', price:720, unit:'pièce', image:'/products/w234.webp', icon:'wardrobe', variants:variantsOf('W234',['6 niveaux','8 niveaux','10 niveaux','12 niveaux'],[720,850,990,1120]) },
+  { id:'w235', name:'Panier rotatif 3 couches', sku:'W235', brand:'Dorüm', category:'Dressing', price:560, unit:'set', image:'/products/w235.webp', icon:'wardrobe' },
+  { id:'w236', name:'Panier rotatif 4 couches', sku:'W236', brand:'Dorüm', category:'Dressing', price:690, unit:'set', image:'/products/w236.webp', icon:'wardrobe' },
+  { id:'w243', name:'Planche à repasser escamotable', sku:'W243', brand:'Dorüm', category:'Dressing', price:325, unit:'pièce', image:'/products/w243.webp', icon:'wardrobe', variants:variantsOf('W243',['400 mm','600 mm'],[325,355]) },
+  { id:'w242', name:'Coffre-fort de dressing', sku:'W242', brand:'Dorüm', category:'Dressing', price:560, unit:'pièce', image:'/products/w242.webp', icon:'wardrobe', variants:variantsOf('W242',['500 mm','600 mm'],[560,690]) },
+  { id:'y611', name:'Boîte multifonction en bois', sku:'Y611', brand:'Yue Wood', category:'Dressing', price:155, unit:'pièce', image:'/products/y611.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`Y611-${v.label.replace(' mm','')}`,price:[155,168,182,199][i]})) },
+  { id:'y614', name:'Panier de rangement en bois', sku:'Y614', brand:'Yue Wood', category:'Dressing', price:145, unit:'pièce', image:'/products/y614.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`Y614-${v.label.replace(' mm','')}`,price:[145,158,172,188][i]})) },
+  { id:'y616', name:'Porte-chaussures en bois', sku:'Y616', brand:'Yue Wood', category:'Dressing', price:225, unit:'pièce', image:'/products/y616.webp', icon:'wardrobe', variants:widths.map((v,i)=>({...v,ref:`Y616-${v.label.replace(' mm','')}`,price:[225,240,258,279][i]})) },
+  { id:'s227a', name:'Barre de penderie LED à détection A', sku:'S227A', brand:'Dorüm', category:'Éclairage LED', price:68, unit:'mètre', image:'/products/led-rod.webp', icon:'light', barcode:'6111202227011', variants:variantsOf('S227A',['Champagne','Or brossé','Noir mat'],[68,74,74]) },
+  { id:'s227b', name:'Barre de penderie LED à détection B', sku:'S227B', brand:'Dorüm', category:'Éclairage LED', price:74, unit:'mètre', image:'/products/led-rod.webp', icon:'light', barcode:'6111202227012', variants:variantsOf('S227B',['Champagne','Or brossé','Noir mat'],[74,79,79]) },
   { id:'led-driver', name:'Transformateur LED 12V', sku:'LED-12V-60W', brand:'Autres', category:'Éclairage LED', price:135, unit:'pièce', icon:'light' },
   { id:'led-strip', name:'Ruban LED 12V blanc', sku:'LED-RB-12', brand:'Autres', category:'Éclairage LED', price:49, unit:'mètre', icon:'light' },
   { id:'blum-hinge', name:'Charnière CLIP top BLUMOTION', sku:'71B3550', brand:'Blum', category:'Cuisine', price:42, unit:'pièce', icon:'kitchen', barcode:'9002617791762' },
@@ -195,7 +195,10 @@ function App() {
         </div>
         <section className="product-grid" aria-label="Produits" data-testid="product-grid">
           {filtered.length ? filtered.map((product) => <article className="product-card" key={product.id} data-testid={`card-product-${product.id}`}>
-            <div className="product-visual" aria-label="Illustration neutre du produit"><ProductIcon type={product.icon}/><span className="product-brand">{product.brand}</span></div>
+            <div className={`product-visual${product.image ? ' has-photo' : ''}`} aria-label={`Image du produit ${product.name}`}>
+              {product.image ? <img className="product-photo" src={product.image} alt={product.name} data-testid={`img-product-${product.id}`} loading="lazy" /> : <ProductIcon type={product.icon} />}
+              <span className="product-brand">{product.brand}</span>
+            </div>
             <div className="product-info">
               <h2 className="product-name">{product.name}</h2><div className="product-sku" data-testid={`text-sku-${product.id}`}>Réf. {product.sku}</div>
             </div>
