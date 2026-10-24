@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Brico Farssi POS"
+description = "A French-language, tablet-first point-of-sale prototype for Brico Farssi staff to browse hardware products, configure variants, build a cart, and simulate checkout using illustrative MAD pricing."
+version = "1.0.0"
+id = "artifacts/brico-farssi-pos"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25058
+
+[services.development]
+run = "pnpm --filter @workspace/brico-farssi-pos run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/brico-farssi-pos", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/brico-farssi-pos/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25058"
+BASE_PATH = "/"

@@ -1,0 +1,149 @@
+# Brico Farssi — Tablet POS UI Prototype
+
+## Project Overview
+
+Design and build a modern, professional Point of Sale (POS) interface for **Brico Farssi (Brico Centro)**, a Moroccan store in Tanger (Dar Tounsi) specialised in **furniture and cabinet hardware and accessories for kitchens, dressings (wardrobes) and doors**. Main brands: Dorüm, Blum, and other furniture-hardware brands.
+
+The app is used only on tablets by store employees to browse the catalog and process customer sales. The owner may operate several stores, so the UI shows the current store and is ready for multi-store use.
+
+**IMPORTANT: UI prototype only.** Use mock data and frontend state. No backend, database, authentication, or real payments.
+
+## 1. Design Direction
+
+A polished, tablet-first retail POS, not a generic admin dashboard or an e-commerce site.
+
+- Clean, modern, professional, functional. Premium retail feel.
+- Landscape tablet first (1024–1366px), responsive for portrait.
+- Large touch targets, clear typography, generous spacing, minimal clutter.
+- Warm off-white background, white product cards, subtle borders.
+- Primary accent: the brand orange (approx. #E8641B), used for primary buttons and active states. (Change this line to use forest green instead.)
+- Dark charcoal text, muted gray secondary text.
+- Lucide icons. Subtle rounded corners.
+- No heavy gradients, glassmorphism, decorative charts, or unnecessary animation.
+- Interface in French, prices in MAD.
+
+## 2. Main POS Screen (most important)
+
+The screen is almost entirely the product catalog. **No permanent cart sidebar.** The cart opens only when the employee taps Panier.
+
+Keep the screen uncluttered. No analytics cards, charts, stock dashboards, or promo banners. Category cards must stay compact and must never push the product grid below the middle of the screen on a landscape tablet.
+
+### A. Header (compact)
+- Text-based brand mark "BF Brico Farssi".
+- Current store: "Magasin Tanger – Dar Tounsi".
+- Small employee indicator: "Caissier".
+- Prominent Panier button, top right, with cart icon, item-count badge, and the cart total when space allows.
+
+### B. Search
+Large search field under the header. Placeholder: "Rechercher un produit, une référence...". Filters instantly by name, reference/SKU (e.g. W221, Y613), and barcode (where mock data has it).
+
+### C. Categories (picture cards)
+
+A horizontal, scrollable row of **category cards**, not plain buttons.
+
+Each card:
+- A photo on top (neutral placeholder image for now; real photos come later) with a rounded image area
+- The category name below it, in clear, medium-weight text
+- Optional small muted line with the product count, e.g. "12 produits"
+- Compact size: about 140–160px wide and 110–130px tall, so the product grid stays the main focus
+- White background, subtle border, same corner radius as product cards
+- Large touch target (the whole card is tappable)
+
+Active state: accent-colored border (2px), a light accent tint on the card background, and the category name in the accent color. Inactive cards stay white with a subtle border.
+
+The first card is "Tous les produits" with a grid icon instead of a photo.
+
+Categories:
+- Tous les produits
+- Cuisine
+- Dressing
+- Portes et serrures
+- Quincaillerie de meubles (charnières, coulisses, poignées)
+- Éclairage LED
+- Accessoires
+
+Behavior:
+- Tapping a card filters the product grid instantly, with no page change.
+- The row scrolls horizontally with snap scrolling when cards don't fit.
+- Under the category cards, add a small row of **brand chips**: Tous, Dorüm, Blum, Autres. Brands don't need pictures. Category and brand filters work together.
+- When the cashier scrolls down the product grid, the category row collapses into a slim sticky strip (small round thumbnail plus name) so the products keep the whole screen. Scrolling back up expands it again.
+
+### D. Product Grid
+Responsive grid, about 4–6 columns on landscape tablet. Each card has:
+- Image (neutral placeholders for now; real photos come later)
+- Product name
+- Reference/SKU in small muted text, plus brand
+- Price in MAD ("à partir de" when variants have different prices)
+- Unit: pièce, jeu, mètre, etc.
+- Clear plus button / tap-to-add
+
+Consistent card heights. Subtle feedback when added (brief highlight and badge update). Adding the same item again increases quantity, no duplicate lines.
+
+### E. Variants (important)
+Most products come in several versions (cabinet width 600 / 700 / 800 / 900 mm, color, number of layers).
+- Tapping a product **with variants** opens a small bottom sheet or modal to choose width, color, or layers before adding.
+- Show the variant's reference and price in the picker.
+- Cart lines show the chosen variant, e.g. "Panier métallique W221 – 800 mm – Supreme Grey".
+- Products without variants (e.g. a hinge) add directly on tap.
+
+### F. States
+Default (all products), active category/brand filter, search results, empty results with a helpful message, add-to-cart feedback.
+
+## 3. Cart Drawer (hidden by default)
+
+Right-side slide-over on landscape; near full-screen modal on portrait. Grid stays visible behind a dimmed overlay.
+
+Contents:
+- Title "Panier"
+- Number of distinct products and total quantity
+- Close button
+- Line items (name + variant, unit price, quantity, line total)
+- Large +/- controls
+- Remove action
+- Empty-cart state
+- Subtotal
+- Optional discount row
+- Prominent total in MAD
+- Large "Encaisser" button
+- Secondary "Vider le panier" (with confirmation)
+
+Closing the drawer keeps cart contents.
+
+## 4. Checkout (simulated)
+
+"Encaisser" opens a payment modal:
+- Total to pay
+- Payment method buttons: Espèces, Carte bancaire, Virement, Crédit client (mock option)
+- For cash: amount received and change due
+- "Confirmer la vente" and a cancel button
+
+On confirm: success state with a sample receipt number, total and payment method, and a "Nouvelle vente" button. Cart clears only after confirmation.
+
+## 5. Interactivity
+Real frontend state for: category, brand, search, catalog, variant picker, cart items/quantities, drawer visibility, checkout modal, payment method, mock sale confirmation. Everything above must actually work.
+
+## 6. Mock Data
+Around 30–40 realistic products, all prices illustrative, in these groups:
+- **Dressing (Dorüm):** panier rotin W201/W220, panier métallique W221, porte-chaussures W222, boîte de rangement en flanelle W223, porte-pantalons W219, porte-pantalons latéral W229, porte-cintres W232, monte-charge de penderie W233, porte-chaussures rotatif 360° W234, panier rotatif 3 / 4 couches W235 / W236, planche à repasser W243, coffre-fort W242.
+- **Dressing (série bois Yue Wood):** boîte multifonction Y611, panier bois Y614, porte-chaussures bois Y616, etc.
+- **Éclairage LED:** barre de penderie LED à détection (S227A/B), by the metre, colors Champagne / Or brossé / Noir mat.
+- **Cuisine (Blum and others):** ferrures d'angle coulissantes, coulisses à fermeture amortie, charnières, tiroirs à l'anglaise.
+- **Portes et serrures:** serrure connectée / empreinte, serrures de porte, poignées.
+- **Quincaillerie de meubles:** charnières, coulisses, poignées, accessoires de fixation.
+
+Variants: widths 600/700/800/900 mm; colors Supreme Grey, Mocha, Walnut, Noir mat, Champagne; layer counts 4/6/8/10/12 for the rotating shoe rack.
+
+## 7. Tablet Responsiveness
+No permanent sidebar, no horizontal page scroll, large touch targets, compact header and search, scrollable category cards, a cart and variant picker that adapt to portrait/landscape. Desktop is a bonus, not the target.
+
+## 8. Technical Scope
+React, TypeScript, Tailwind CSS, Lucide icons. Reusable components, small mock dataset.
+
+Do NOT implement: backend, database, real auth, multi-store sync, inventory, suppliers, customer management, analytics, real payments.
+
+## 9. Quality Standard
+Production-quality tablet POS prototype I can show the store owner before development. Prioritize the main caisse screen, product discovery, category and brand navigation, the variant picker, and the hidden-by-default cart.
+
+**Principle: the tablet screen belongs to the product catalog. The cart appears only when the cashier asks for it.**
+
+Start with the main POS screen and its cart, variant picker, and checkout flows.
