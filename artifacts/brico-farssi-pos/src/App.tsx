@@ -2,9 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Armchair, ArrowLeft, Check, DoorClosed, Drill,
   Grid2X2, LampDesk, LockKeyhole, Minus, Package, Plus, Search, ShoppingBasket,
-  ShoppingCart, SlidersHorizontal, Trash2, Utensils, X, Zap, CreditCard,
+  ShoppingCart, SlidersHorizontal, Trash2, Utensils, X, Zap, CreditCard, LogOut,
   Banknote, Landmark, UserRound, RotateCcw, Layers, BadgeCheck,
 } from 'lucide-react';
+import { useLocation } from 'wouter';
+import { AUTH_SESSION_KEY } from './constants/auth';
+import { LoginPage } from './components/login-page';
 
 type Category = 'Cuisine' | 'Dressing' | 'Portes et serrures' | 'Quincaillerie de meubles' | 'Éclairage LED' | 'Accessoires';
 type Variant = { label: string; ref: string; price: number };
@@ -75,6 +78,34 @@ const ProductIcon = ({ type }: { type: Product['icon'] }) => {
 };
 
 function App() {
+  const [location, setLocation] = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    () => window.localStorage.getItem(AUTH_SESSION_KEY) === 'true',
+  );
+
+  useEffect(() => {
+    if (isAuthenticated && location !== '/') setLocation('/');
+    if (!isAuthenticated && location !== '/login') setLocation('/login');
+  }, [isAuthenticated, location, setLocation]);
+
+  if (!isAuthenticated) {
+    return <LoginPage onSuccess={() => {
+      window.localStorage.setItem(AUTH_SESSION_KEY, 'true');
+      setIsAuthenticated(true);
+      setLocation('/');
+    }} />;
+  }
+
+  if (location !== '/') return null;
+
+  return <PosScreen onLogout={() => {
+    window.localStorage.removeItem(AUTH_SESSION_KEY);
+    setIsAuthenticated(false);
+    setLocation('/login');
+  }} />;
+}
+
+function PosScreen({ onLogout }: { onLogout: () => void }) {
   const [category, setCategory] = useState<string>('Tous les produits');
   const [brand, setBrand] = useState('Tous');
   const [query, setQuery] = useState('');
@@ -155,6 +186,15 @@ function App() {
         <div className="store-pill" data-testid="text-store"><span className="store-dot" />Magasin Tanger – Dar Tounsi</div>
         <div className="header-spacer" />
         <div className="employee"><span className="employee-avatar">CA</span><span>Caissier</span></div>
+        <button
+          className="logout-button"
+          type="button"
+          data-testid="button-logout"
+          onClick={() => {
+            if (itemCount > 0 && !window.confirm('Le panier contient des articles. Voulez-vous vraiment vous déconnecter ? Les articles en cours seront perdus.')) return;
+            onLogout();
+          }}
+        ><LogOut size={15} /><span>Déconnexion</span></button>
         <div className="header-time" data-testid="text-register-status">Caisse ouverte</div>
       </header>
 
