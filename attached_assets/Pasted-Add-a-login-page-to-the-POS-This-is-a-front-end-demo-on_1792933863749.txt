@@ -1,0 +1,27 @@
+Add a login page to the POS. This is a front-end demo only, no backend and no database.
+
+Behavior:
+- The login page is the first screen. The POS is only visible after a successful login.
+- Valid credentials (hard-coded in one constants file so they are easy to change later):
+  username: bricofarssi
+  password: 0000
+- Wrong credentials: show a clear French error message under the form ("Nom d'utilisateur ou mot de passe incorrect") and keep the typed username.
+- Empty fields: show "Veuillez remplir tous les champs".
+- After a successful login, go to the POS main screen.
+- Keep the user logged in after a page refresh (store a simple logged-in flag in localStorage).
+- Direct access to the POS without being logged in must redirect to the login page.
+- Add a "Déconnexion" button in the header, next to the Caissier indicator. It clears the flag and returns to the login page. If the cart is not empty, ask for confirmation first.
+- Show the cashier name in the header as "Caissier" like now.
+
+Design (tablet first, same style as the POS):
+- Warm off-white background, one centered white card with subtle border and soft shadow, max width about 420px.
+- At the top of the card: the BF logo, "Brico Farssi" and the small line "QUINCAILLERIE & FERRURES", then the store "Magasin Tanger – Dar Tounsi".
+- Title "Connexion" and a short subtitle "Connectez-vous pour accéder à la caisse".
+- Fields: "Nom d'utilisateur" (user icon) and "Mot de passe" (lock icon) with a show/hide eye button.
+- Large touch-friendly inputs (about 52px tall) and a full-width orange primary button "Se connecter".
+- Orange accent for the focus state and the button, like the rest of the app.
+- Pressing Enter submits the form. Autofocus on the username field.
+- Works well in landscape and portrait on a tablet. The on-screen keyboard must not hide the button.
+- Lucide icons, no animation except a subtle shake on wrong credentials.
+
+Do not change the POS screens, the cart or the checkout. Only add the login page, the route protection and the logout button.
